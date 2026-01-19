@@ -1,0 +1,136 @@
+{
+  "last_node_id": 3,
+  "last_link_id": 3,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "ImitatoesSelfImprovingPrompt",
+      "pos": [
+        50,
+        150
+      ],
+      "size": [
+        320,
+        240
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "prompt_out",
+          "type": "STRING",
+          "links": [
+            1
+          ]
+        },
+        {
+          "name": "should_continue",
+          "type": "BOOLEAN",
+          "links": [
+            2
+          ]
+        },
+        {
+          "name": "next_iteration",
+          "type": "INT",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImitatoesSelfImprovingPrompt"
+      },
+      "widgets_values": [
+        "A cozy reading nook lit by morning sunlight, warm tones, soft textures.",
+        "Add a cat sleeping on the chair.",
+        1,
+        5,
+        "[DONE]"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "ShowText",
+      "pos": [
+        430,
+        130
+      ],
+      "size": [
+        300,
+        120
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "link": 1
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "ShowText"
+      }
+    },
+    {
+      "id": 3,
+      "type": "ShowText",
+      "pos": [
+        430,
+        280
+      ],
+      "size": [
+        300,
+        120
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "BOOLEAN",
+          "link": 2
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "ShowText"
+      }
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "STRING"
+    ],
+    [
+      2,
+      1,
+      1,
+      3,
+      0,
+      "BOOLEAN"
+    ],
+    [
+      3,
+      1,
+      2,
+      2,
+      1,
+      "INT"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {}
+}
