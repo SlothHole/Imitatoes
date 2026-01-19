@@ -13,6 +13,34 @@ The `ImitatoesSelfImprovingPrompt` node helps manage the text-loop portion of th
 ## Workflow
 
 Import `workflows/imitatoes_self_improving.json` to see a starter loop that showcases the node outputs.
+
+## Setup
+
+Prerequisites:
+
+* Python 3 (for the automation scripts and tests)
+* ComfyUI (for the custom node)
+
+Run the install script to create a local virtual environment and install dependencies from `requirements.txt` and `requirements-dev.txt`:
+
+```bash
+./scripts/install.sh
+```
+
+Activate the virtual environment before running scripts:
+
+```bash
+source .venv/bin/activate
+```
+
+## Run/Validate
+
+Use the test script to run ruff and pytest:
+
+```bash
+./scripts/test.sh
+```
+
 ## Goal
 
 Create an external orchestration loop that drives ComfyUI’s API and a local vision model (via Ollama) to iteratively refine images until a clear done condition is met.
