@@ -1,5 +1,5 @@
 {
-  "last_node_id": 3,
+  "last_node_id": 4,
   "last_link_id": 3,
   "nodes": [
     {
@@ -102,6 +102,32 @@
       "properties": {
         "Node name for S&R": "ShowText"
       }
+    },
+    {
+      "id": 4,
+      "type": "ShowText",
+      "pos": [
+        430,
+        430
+      ],
+      "size": [
+        300,
+        120
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "INT",
+          "link": 3
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "ShowText"
+      }
     }
   ],
   "links": [
@@ -125,8 +151,8 @@
       3,
       1,
       2,
-      2,
-      1,
+      4,
+      0,
       "INT"
     ]
   ],
