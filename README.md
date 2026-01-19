@@ -13,18 +13,43 @@ The `ImitatoesSelfImprovingPrompt` node helps manage the text-loop portion of th
 ## Workflow
 
 Import `workflows/imitatoes_self_improving.json` to see a starter loop that showcases the node outputs.
+
+## Setup
+
+Prerequisites:
+
+* Python 3 (for the automation scripts and tests)
+* ComfyUI (for the custom node)
+
+Run the install script to create a local virtual environment and install dependencies from `requirements.txt` and `requirements-dev.txt`:
+
+```bash
+./scripts/install.sh
+```
+
+Activate the virtual environment before running scripts:
+
+```bash
+source .venv/bin/activate
+```
+
+## Run/Validate
+
+Use the test script to run ruff and pytest:
+
+```bash
+./scripts/test.sh
+```
+
 ## Goal
 
-Create an external orchestration loop that drives ComfyUI’s API and a local vision model (via Ollama) to iteratively refine images until a clear done condition is met.
+Run an external orchestration loop that drives ComfyUI’s API and a local vision model (via Ollama) to iteratively refine images until the model confirms the requirements are met or the maximum loop count is reached.
 
-## Phase 0 — Define the stop condition
+## Loop behavior
 
-Pick a primary done rule (with a hard safety cap) to prevent endless loops.
-
-Recommended:
-
-* Model returns JSON with `done: true` when satisfied.
-* Hard cap: `max_iters = 5–10`.
+* The user sets **iterations per loop**, which controls how many times the system generates → reviews → regenerates within a single loop.
+* The user also sets a **max loops** value to cap how many loops can run.
+* If the vision model marks the output as complete, the loop ends early and waits for further instruction.
 
 ## Phase 1 — Install and verify the local vision model (Ollama)
 
@@ -45,9 +70,20 @@ Recommended:
    * Optional: `__CFG__`, `__STEPS__`, `__SEED__`
 4. Confirm outputs are retrievable via `/history/{prompt_id}` and `/view`.
 
-## Phase 3 — Build the controller loop (PowerShell)
+## Phase 3 — Run the controller loop (Python)
 
-The controller should:
+Use the Python controller to orchestrate ComfyUI and Ollama:
+
+```bash
+python scripts/run_loop.py \
+  --workflow workflows/imitatoes_self_improving.json \
+  --prompt "your prompt" \
+  --negative-prompt "your negatives" \
+  --iterations-per-loop 2 \
+  --max-loops 5
+```
+
+The controller will:
 
 1. Load the workflow template JSON.
 2. Replace tokens with the current prompt/params.
@@ -56,7 +92,7 @@ The controller should:
 5. Download the image via `/view`.
 6. Send the image + context to Ollama `/api/chat` as base64.
 7. Parse the JSON response and apply patches.
-8. Stop on `done` or `max_iters`.
+8. Stop on `done` or when the loop limits are reached.
 
 ### Required LLM response (JSON only)
 
@@ -85,9 +121,8 @@ To keep payloads small and fast:
 
 Create a run folder per session and save:
 
-* `iter_01.png` / `iter_01.jpg`
-* `iter_01.json` (LLM response)
-* `iter_01_patch.json` (applied changes)
+* `loop_01_iter_01.png`
+* `loop_01_iter_01.json` (LLM response)
 
 This provides visibility into oscillations, seed changes, and prompt bloat.
 
@@ -112,6 +147,6 @@ External orchestration is more robust.
 
 * ✅ Ollama installed + vision model pulled
 * ✅ ComfyUI workflow exported with `__PROMPT__` / `__NEG__`
-* ✅ PowerShell loop controller calling `/prompt`, `/history`, `/view`, `/api/chat`
+* ✅ Python loop controller calling `/prompt`, `/history`, `/view`, `/api/chat`
 * ✅ Iteration logs + saved images per step
 * ✅ Written goal spec defining “happy”
